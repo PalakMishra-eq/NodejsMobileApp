@@ -1,7 +1,9 @@
 // routes/planRoutes.js
 const express = require('express');
-const PlanController = require('../controllers/planController');
-const authenticateUser = require('../middleware/authenticationMiddleware');
+const PlanController = require('./controler');
+const authenticateUser = require('./middleware');
+const User = require('./models'); // Import the User model
+
 
 const router = express.Router();
 

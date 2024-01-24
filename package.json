@@ -1,0 +1,16 @@
+{
+  "name": "nodejsmobileapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mobileapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "mongod": "^2.0.0",
+    "mongoose": "^8.1.0"
+  }
+}
