@@ -1,24 +1,33 @@
  // models/models.js
-const mongoose = require('mongoose');
+ const mongoose = require('mongoose');
+//  const con=require('./db');
 
-// User Schema
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+ // User Schema
+ const userSchema = new mongoose.Schema({
+   username: {
+     type: String,
+     required: true,
+   },
+   email: {
+     type: String,
+     required: true,
+     unique: true,
+   },
+   password: {
+     type: String,
+     required: true,
+   },
+ });
 
 const User = mongoose.model('User', userSchema);
+
+// const newUser = new User({
+//   username: 'exampleUser',
+//   email: 'example@email.com',
+//   password: 'examplePassword',
+// });
+
+// newUser.save();
 
 // Plan Schema
 const planSchema = new mongoose.Schema({

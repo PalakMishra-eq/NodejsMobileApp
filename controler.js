@@ -1,10 +1,18 @@
 // controllers/planController.js
-const Plan = require('./models').Plan;
+const model = require('./models');
+//console.log(model);
+
+function landingPage(req, res){
+    const name = req.query.name;
+    res.send(name);
+
+}
 
 function getAllPlans(req, res) {
   try {
-    const plans =  Plan.find();
-    res.json(plans);
+    const plans =  model.Plan.find();
+    // console.log(plans);
+    res.send(plans);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -14,8 +22,8 @@ function getAllPlans(req, res) {
 function purchasePlan(req, res) {
   try {
     // Assuming plan details are present in req.body
-    const newPlan =  Plan.create(req.body);
-    res.status(201).json(newPlan);
+    const newPlan =  model.Transaction.create();
+    res.status(201).send(newPlan);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -25,7 +33,10 @@ function purchasePlan(req, res) {
  function getUserPlans(req, res) {
   try {
     // Assuming user information is available in req.user
-    const userPlans =  Plan.find({ userId: req.user._id });
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const userPlans =  model.Transaction.find({userId: req.params.userId, // Assuming userId is part of the request parameters
+    expiryDate: { $gt: today },});
     res.json(userPlans);
   } catch (error) {
     console.error(error);
@@ -36,7 +47,7 @@ function purchasePlan(req, res) {
  function getExpiringPlans(req, res) {
   try {
     // Assuming user information is available in req.user
-    const expiringPlans =  Plan.find({
+    const expiringPlans =  model.Transaction.find({
       userId: req.user._id,
       expiryDate: { $gte: new Date(), $lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
     });
@@ -48,6 +59,7 @@ function purchasePlan(req, res) {
 }
 
 module.exports = {
+  landingPage,  
   getAllPlans,
   purchasePlan,
   getUserPlans,

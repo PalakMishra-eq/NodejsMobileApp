@@ -5,9 +5,9 @@ function authenticateUser(req, res, next) {
   // Get the token from the Authorization header
   const token = req.headers.authorization;
 
-  if (!token) {
-    return res.status(401).json({ error: 'Unauthorized - Missing token' });
-  }
+//   if (!token) {
+//     return res.status(401).json({ error: 'Unauthorized - Missing token' });
+//   }
 
   // Verify the token
   jwt.verify(token, 'your-secret-key', (err, decoded) => {
