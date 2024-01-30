@@ -1,17 +1,21 @@
 // middleware/authMiddleware.js
+
 const jwt = require('jsonwebtoken');
 
 function authenticateUser(req, res, next) {
   // Get the token from the Authorization header
-  const token = req.headers.authorization;
+  const authorizationHeader = req.headers.authorization;
 
-//   if (!token) {
-//     return res.status(401).json({ error: 'Unauthorized - Missing token' });
-//   }
+  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized - Missing or invalid token format' });
+  }
+
+  const token = authorizationHeader.split(' ')[1];
 
   // Verify the token
   jwt.verify(token, 'your-secret-key', (err, decoded) => {
     if (err) {
+      // Handle specific errors (e.g., TokenExpiredError, JsonWebTokenError)
       return res.status(401).json({ error: 'Unauthorized - Invalid token' });
     }
 

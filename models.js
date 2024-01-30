@@ -4,6 +4,7 @@
 
  // User Schema
  const userSchema = new mongoose.Schema({
+   
    username: {
      type: String,
      required: true,
@@ -31,6 +32,9 @@ const User = mongoose.model('User', userSchema);
 
 // Plan Schema
 const planSchema = new mongoose.Schema({
+  planId: {
+
+  }
   name: {
     type: String,
     required: true,
@@ -66,6 +70,32 @@ const planSchema = new mongoose.Schema({
 
 const Plan = mongoose.model('Plan', planSchema);
 
+// const samplePlans = [
+//   {
+//     name: 'Basic Plan',
+//     planCode: 'BASIC123',
+//     price: 19.99,
+//     validityDays: 30,
+//     dataLimit: 2,
+//     smsLimit: 100,
+//     talkTimeLimit: 300,
+//     details: 'Includes basic features.',
+//   },
+//   {
+//     name: 'Premium Plan',
+//     planCode: 'PREMIUM456',
+//     price: 49.99,
+//     validityDays: 60,
+//     dataLimit: 10,
+//     smsLimit: 500,
+//     talkTimeLimit: 1000,
+//     details: 'Includes premium features.',
+//   },
+//   // Add more plans as needed
+// ];
+
+// Plan.insertMany(samplePlans);
+
 const transactionSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -93,4 +123,22 @@ const transactionSchema = new mongoose.Schema({
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
+
+const sampleTrans=[
+  {
+    userId: user._id,
+    planId: Plan._id,
+    purchaseDate: new Date,
+    activationDate: '12-02-2024',
+    expiryDate: '12-12-2024',
+  }
+];
+
+Transaction.insertMany(sampleTrans);
+
+
 module.exports = { User, Plan, Transaction };
+
+
+const user = await User.findOne({ /* Your filter criteria to find the user */ });
+const plan = await Plan.findOne({ /* Your filter criteria to find the plan */ });

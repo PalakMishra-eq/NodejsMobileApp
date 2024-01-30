@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.get('/', PlanController.landingPage);
 router.get('/plans', PlanController.getAllPlans);
-router.post('/purchase', authenticateUser, PlanController.purchasePlan);
-router.get('/user/plans', authenticateUser, PlanController.getUserPlans);
-router.get('/expiring-plans', authenticateUser, PlanController.getExpiringPlans);
+router.post('/purchase',  PlanController.purchasePlan);
+router.get('/user/plans', PlanController.getUserPlans);
+router.get('/expiring-plans', PlanController.getExpiringPlans);
 
 module.exports = router;

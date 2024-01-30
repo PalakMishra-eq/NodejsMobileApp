@@ -10,8 +10,8 @@ const mongoose = require('mongoose');
 const MONGODB_URI = 'mongodb://localhost:27017/mycon';
 
 mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
@@ -35,10 +35,10 @@ app.use(bodyParser.json());
 
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({ error: 'Internal middleware Server Error' });
+// });
 
 // Start the server
 // const Server = 3000;
