@@ -13,7 +13,7 @@ function authenticateUser(req, res, next) {
   const token = authorizationHeader.split(' ')[1];
 
   // Verify the token
-  jwt.verify(token, 'your-secret-key', (err, decoded) => {
+  jwt.verify(token, 'palakm', (err, decoded) => {
     if (err) {
       // Handle specific errors (e.g., TokenExpiredError, JsonWebTokenError)
       return res.status(401).json({ error: 'Unauthorized - Invalid token' });
