@@ -7,11 +7,10 @@ const router = express.Router();
 // Replace 'your-secret-key' with your actual secret key
 const secretKey = 'palakm';
 
-// Sample user data (replace with your actual user data retrieval logic)
-const sampleUser = {
-  id: 1,
-  username: 'exampleUser',
-};
+// const sampleUser = {
+//   id: 1,
+//   username: 'exampleUser',
+// };
 
 router.get('/token', (req, res) => {
   // Create a JWT token with user information

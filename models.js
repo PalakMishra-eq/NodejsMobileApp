@@ -34,7 +34,7 @@ const User = mongoose.model('User', userSchema);
 const planSchema = new mongoose.Schema({
   planId: {
 
-  }
+  },
   name: {
     type: String,
     required: true,
