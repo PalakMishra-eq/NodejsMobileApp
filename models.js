@@ -1,10 +1,14 @@
  // models/models.js
  const mongoose = require('mongoose');
 //  const con=require('./db');
+// const ObjectId= mongoose.Types.ObjectId;
 
  // User Schema
  const userSchema = new mongoose.Schema({
-   
+   userId: {
+    type: Number,
+    required: true,
+   },
    username: {
      type: String,
      required: true,
@@ -33,7 +37,8 @@ const User = mongoose.model('User', userSchema);
 // Plan Schema
 const planSchema = new mongoose.Schema({
   planId: {
-
+    type: Number,
+    required: true,
   },
   name: {
     type: String,
@@ -126,8 +131,8 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 
 const sampleTrans=[
   {
-    userId: user._id,
-    planId: Plan._id,
+    userId: User.userId,
+    planId: Plan.planId,
     purchaseDate: new Date,
     activationDate: '12-02-2024',
     expiryDate: '12-12-2024',
@@ -140,5 +145,5 @@ Transaction.insertMany(sampleTrans);
 module.exports = { User, Plan, Transaction };
 
 
-const user = await User.findOne({ /* Your filter criteria to find the user */ });
-const plan = await Plan.findOne({ /* Your filter criteria to find the plan */ });
+// const user = await User.findOne({ /* Your filter criteria to find the user */ });
+// const plan = await Plan.findOne({ /* Your filter criteria to find the plan */ });

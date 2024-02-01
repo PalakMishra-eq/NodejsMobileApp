@@ -29,7 +29,8 @@ const Port = process.env.PORT || 3000;
 const route=require('./routes');
 app.use(route);
 
-
+const authController = require('./authController');
+app.use('/api/auth', authController);
 // Middleware for parsing JSON requests
 app.use(bodyParser.json());
 

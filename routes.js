@@ -4,8 +4,7 @@ const PlanController = require('./controler');
 const authenticateUser = require('./middleware');
 const User = require('./models'); // Import the User model
 
-const authController = require('./authController');
-app.use('/api/auth', authController);
+
 const router = express.Router();
 
 router.get('/', PlanController.landingPage);
