@@ -73,10 +73,9 @@ async function purchasePlan(req, res) {
   try {
     // Assuming user information is available in req.user
     const expiringPlans = await Transaction.find({
-      userId: req.user._id,
       expiryDate: { $gte: new Date(), $lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
     });//also return days left.
-    res.json();
+    res.json(expiringPlans);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
