@@ -122,21 +122,21 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 
 // (async () => {
 //   const user = await User.findOne({ username: "Palak" });
-//   const plan = await Plan.findOne({ name: "Premium Plan" });
+//   const plan = await Plan.findOne({ name: "Basic Plan" });
 
 //   const sampleTrans = [
 //     {
 //       userId: user._id,
 //       planId: plan._id,
 //       purchaseDate: new Date(),
-//       activationDate: new Date('2024-01-01'), // Convert string to Date
-//       expiryDate: new Date('2024-02-07'), // Convert string to Date
+//       activationDate: new Date('2024-06-24'), // Convert string to Date
+//       expiryDate: new Date('2024-10-01'), // Convert string to Date
 //     }
 //   ];
 
 //   Transaction.create(sampleTrans);
-  //iife asyn syntax
-//})();
+//   //iife asyn syntax
+// })();
 
 
 module.exports = { User, Plan, Transaction };
