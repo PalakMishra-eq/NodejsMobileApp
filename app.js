@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 
 // Read the configuration file
-const configPath = './config.js'; // Adjust the path accordingly
+const configPath = './config.js'; 
 const rawData = fs.readFileSync(configPath);
 const config = JSON.parse(rawData);
 
@@ -41,13 +41,9 @@ app.use(route);
 const authController = require('./authController');
 app.use('/api/auth', authController);
 
+// const authenticateUser = require('./middleware');
+// app.use(authenticateUser);
 
-
-// Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ error: 'Internal middleware Server Error' });
-// });
 
 // Start the server
 // const Server = 3000;

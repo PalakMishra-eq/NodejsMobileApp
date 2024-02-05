@@ -12,47 +12,10 @@ const getAllPlans = async (req, res)=> {
 
   
   const plans = await Plan.find({}, '-__v').lean(); //.select('name')
-    //console.log(plans);
-    //const planNames=plans.map(plan => plan.name);
-    //console.log(planNames);
-    // const planData = plans.map(plan => ({
-    //   name: plan.name,
-    //   planCode: plan.planCode,
-    //   price: plan.price,
-    //   validityDays: plan.validityDays,
-    //   dataLimit: plan.dataLimit,
-    //   smsLimit: plan.smsLimit,
-    //   talkTimeLimit: plan.talkTimeLimit,
-    //   details: plan.details,
-    // }));
-    res.send(planData);
+   
+    res.send(plans);
 }
 
-// async function purchasePlan(req, res) {
-//   try {
-//     // Assuming plan details are present in req.body
-//     const today = new Date();
-
-//     // Assuming you have a document with a specific _id
-//     const planInstance =await Plan.findById();
-//     // Accessing the validityDays property
-//     const pvalidity = planInstance.validityDays;
-//     const exp=Transaction.findOne({
-//       expiryDate: { $gt: today },
-//       purchaseDate: { $lt: today }
-//     });
-//     const activationDate= exp.expiryDate;
-//     const expDate = activationDate+pvalidity ;
-//     const userId=req.query.userId;
-//     const planId=req.query.planId;
-
-//     const newPlan =  Transaction.create(userId, planId, today,activationDate, expDate  );
-//     res.status(201).send(newPlan);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// }
 
 async function purchasePlan(req, res) {
    try {
@@ -80,7 +43,7 @@ async function purchasePlan(req, res) {
     );
     console.log('Last Plan:', lastPlan);
 
-    const activationDate = lastPlan ? lastPlan.expiryDate : today;
+    const activationDate = lastPlan ? lastPlan.expiryDate : today; //if lastplan exists otherwise today is activation date!
     console.log('Activation Date:', activationDate);
     const expiryDate = new Date(activationDate.getTime() + planInstance.validityDays * 24 * 60 * 60 * 1000);
     console.log('Expiry Date:', expiryDate);
@@ -102,28 +65,21 @@ async function purchasePlan(req, res) {
 
  async function getUserPlans(req, res) {
   try {
-    // Assuming user information is available in req.user
-    // const today = new Date();
-    // today.setHours(0, 0, 0, 0);
-    // const userPlans = await Transaction.find({userId: req.params.userId, // Assuming userId is part of the request parameters
-    // expiryDate: { $gt: today },});
-
-    // res.json(userPlans);
-
+    
     // Fetch active plans (expiryDate > today)
     const activePlans = await Transaction.find({
       expiryDate: { $gt: new Date() },
-    });
+    },'-__v').lean();
 
     // Fetch expired plans (expiryDate <= today)
     const expiredPlans = await Transaction.find({
       expiryDate: { $lte: new Date() },
-    });
+    },'-__v').lean();
 
     // Fetch plans whose activation date is greater than today
     const futureActivationPlans = await Transaction.find({
       activationDate: { $gt: new Date() },
-    });
+    },'-__v').lean();
 
     res.json({
       activePlans,
