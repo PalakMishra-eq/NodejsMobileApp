@@ -11,20 +11,20 @@ function landingPage(req, res){
 const getAllPlans = async (req, res)=> {
 
   
-  const plans = await Plan.find({}, '-__v'); //.select('name')
+  const plans = await Plan.find({}, '-__v').lean(); //.select('name')
     //console.log(plans);
     //const planNames=plans.map(plan => plan.name);
     //console.log(planNames);
-    const planData = plans.map(plan => ({
-      name: plan.name,
-      planCode: plan.planCode,
-      price: plan.price,
-      validityDays: plan.validityDays,
-      dataLimit: plan.dataLimit,
-      smsLimit: plan.smsLimit,
-      talkTimeLimit: plan.talkTimeLimit,
-      details: plan.details,
-    }));
+    // const planData = plans.map(plan => ({
+    //   name: plan.name,
+    //   planCode: plan.planCode,
+    //   price: plan.price,
+    //   validityDays: plan.validityDays,
+    //   dataLimit: plan.dataLimit,
+    //   smsLimit: plan.smsLimit,
+    //   talkTimeLimit: plan.talkTimeLimit,
+    //   details: plan.details,
+    // }));
     res.send(planData);
 }
 

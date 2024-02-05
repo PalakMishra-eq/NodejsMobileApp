@@ -5,6 +5,12 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const fs = require('fs');
+
+// Read the configuration file
+const configPath = './config.js'; // Adjust the path accordingly
+const rawData = fs.readFileSync(configPath);
+const config = JSON.parse(rawData);
 
 //connection
 const MONGODB_URI = 'mongodb://localhost:27017/mycon';
