@@ -13,7 +13,7 @@ const rawData = fs.readFileSync(configPath);
 const config = JSON.parse(rawData);
 
 //connection
-const db='./db';
+const db=require('./db');
 app.use(db);
 //connection
 
