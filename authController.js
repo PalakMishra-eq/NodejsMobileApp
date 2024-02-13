@@ -5,7 +5,9 @@ const { User } = require('./models');
 const router = express.Router();
 
 //secret key
-const secretKey = 'palakm';
+// const secretKey = 'palakm';
+const config = require('./config');
+const secretKey = config.get('secret-key');
 
 //new controller
 router.post('/login', async (req, res) => {

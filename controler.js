@@ -67,7 +67,7 @@ async function purchasePlan(req, res) {
   try {
     
     // Fetch active plans (expiryDate > today)
-    const activePlans = await Transaction.find({
+    const activePlans = await Transaction.find({ activationDate: {$lte : new Date()},
       expiryDate: { $gt: new Date() },
     },'-__v').lean();
 
