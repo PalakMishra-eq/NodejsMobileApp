@@ -1,7 +1,7 @@
 // db.js
 const mongoose = require('mongoose');
 
-cconst MONGODB_URI = 'mongodb://localhost:27017/mycon';
+const MONGODB_URI = 'mongodb://localhost:27017/mycon';
 
 mongoose.connect(MONGODB_URI, {
   // useNewUrlParser: true,

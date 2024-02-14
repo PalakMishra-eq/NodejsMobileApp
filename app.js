@@ -14,7 +14,6 @@ const config = JSON.parse(rawData);
 
 //connection
 const db=require('./db');
-app.use(db);
 //connection
 
 // Initialize Express app
