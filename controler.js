@@ -94,11 +94,49 @@ async function purchasePlan(req, res) {
 
  async function getExpiringPlans(req, res) {
   try {
-    // Assuming user information is available in req.user
+    // Schedule cron job to run every day at midnight
+cron.schedule('0 0 * * *', async () => {
+  try {
+    // Fetch all expiring plans within the next seven days
     const expiringPlans = await Transaction.find({
       expiryDate: { $gte: new Date(), $lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
-    });//also return days left.
-    res.json(expiringPlans);
+    }).populate('userId').populate('planId');
+
+    // Iterate through each expiring plan
+    expiringPlans.forEach(async (plan) => {
+      const millisecondsInADay = 24 * 60 * 60 * 1000;
+      const daysLeft = Math.ceil((plan.expiryDate - Date.now()) / millisecondsInADay);
+
+      // Trigger email if days left is within the next seven days
+      if (daysLeft >= 0 && daysLeft <= 7) {
+        const { userDetails } = plan;
+        const emailContent = `Hello ${userDetails.username}, your plan is expiring in ${daysLeft} days.`;
+        await sendEmail(userDetails.email, 'Plan Expiry Reminder', emailContent);
+      }
+    });
+  } catch (error) {
+    console.error('Error in cron job:', error);
+  }
+});
+
+    const expiringPlans = await Transaction.find({
+      expiryDate: { $gte: new Date(), $lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
+     });//also return days left.
+
+     const plansWithDaysLeft = expiringPlans.map(plan => {
+      const millisecondsInADay = 24 * 60 * 60 * 1000;
+      const daysLeft = Math.ceil((plan.expiryDate - Date.now()) / millisecondsInADay);
+      return { 
+        ...plan._doc, 
+        daysLeft,
+        userDetails: {
+          username: plan.userId.username,
+          email: plan.userId.email
+        }
+      }; // Add daysLeft to each plan
+    });
+
+    res.json(plansWithDaysLeft);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

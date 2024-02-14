@@ -7,10 +7,6 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const fs = require('fs');
 
-// Read the configuration file
-const configPath = './config.js'; 
-const rawData = fs.readFileSync(configPath);
-const config = JSON.parse(rawData);
 
 //connection
 const db=require('./db');

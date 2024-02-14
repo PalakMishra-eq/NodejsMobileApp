@@ -7,7 +7,7 @@ const router = express.Router();
 //secret key
 // const secretKey = 'palakm';
 const config = require('./config');
-const secretKey = config.get('secret-key');
+
 
 //new controller
 router.post('/login', async (req, res) => {
@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Create a JWT token with user information
-    const token = jwt.sign({ user: { id: user._id, email: user.email } }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ user: { id: user._id, email: user.email } }, config.secretKey, { expiresIn: '1h' });
 
     // Send the token in the response
     res.json({ token });
