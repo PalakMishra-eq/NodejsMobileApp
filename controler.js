@@ -2,11 +2,26 @@
 const {User, Plan, Transaction}= require('./models');
 //console.log(model);
 
+const cron = require('node-cron');
+const sendEmail = require('./emailService.js');
+const middleware=require('./middleware');
+
+const jwt = require('jsonwebtoken');
+const config = require('./config');
+
+
+
+
+
+
+
 function landingPage(req, res){
     const name = req.query.name;
-    res.send(name);
+    res.send("Welcome to Jio Teelecom Service");
 
 }
+
+//======================================================================================================
 
 const getAllPlans = async (req, res)=> {
 
@@ -15,6 +30,12 @@ const getAllPlans = async (req, res)=> {
    
     res.send(plans);
 }
+
+
+
+//=====================================================================================================
+
+
 
 
 async function purchasePlan(req, res) {
@@ -63,21 +84,30 @@ async function purchasePlan(req, res) {
   }
 }
 
+
+//=========================================================================================================
+
+
+
+
  async function getUserPlans(req, res) {
   try {
     
+  // Extract user ID and email from the decoded payload
+  const userid = req.userId;
+
     // Fetch active plans (expiryDate > today)
-    const activePlans = await Transaction.find({ activationDate: {$lte : new Date()},
+    const activePlans = await Transaction.find({userId:userid, activationDate: {$lte : new Date()},
       expiryDate: { $gt: new Date() },
     },'-__v').lean();
 
     // Fetch expired plans (expiryDate <= today)
-    const expiredPlans = await Transaction.find({
+    const expiredPlans = await Transaction.find({userId: userid,
       expiryDate: { $lte: new Date() },
     },'-__v').lean();
 
     // Fetch plans whose activation date is greater than today
-    const futureActivationPlans = await Transaction.find({
+    const futureActivationPlans = await Transaction.find({userId: userid,
       activationDate: { $gt: new Date() },
     },'-__v').lean();
 
@@ -92,8 +122,16 @@ async function purchasePlan(req, res) {
   }
 }
 
+
+
+//==============================================================================================================
+
+
+
+
  async function getExpiringPlans(req, res) {
   try {
+    const userid = req.userId;
     // Schedule cron job to run every day at midnight
 cron.schedule('0 0 * * *', async () => {
   try {
@@ -109,9 +147,8 @@ cron.schedule('0 0 * * *', async () => {
 
       // Trigger email if days left is within the next seven days
       if (daysLeft >= 0 && daysLeft <= 7) {
-        const { userDetails } = plan;
         const emailContent = `Hello ${userDetails.username}, your plan is expiring in ${daysLeft} days.`;
-        await sendEmail(userDetails.email, 'Plan Expiry Reminder', emailContent);
+        await sendEmail(req.body.email, 'Plan Expiry Reminder', emailContent);
       }
     });
   } catch (error) {
@@ -119,9 +156,9 @@ cron.schedule('0 0 * * *', async () => {
   }
 });
 
-    const expiringPlans = await Transaction.find({
+    const expiringPlans = await Transaction.find({userId:userid,
       expiryDate: { $gte: new Date(), $lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
-     });//also return days left.
+     });
 
      const plansWithDaysLeft = expiringPlans.map(plan => {
       const millisecondsInADay = 24 * 60 * 60 * 1000;
@@ -133,7 +170,7 @@ cron.schedule('0 0 * * *', async () => {
           username: plan.userId.username,
           email: plan.userId.email
         }
-      }; // Add daysLeft to each plan
+      }; // Adds daysLeft to each plan
     });
 
     res.json(plansWithDaysLeft);

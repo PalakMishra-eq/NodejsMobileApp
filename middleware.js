@@ -21,7 +21,7 @@ async function authenticateUser(req, res, next) {
     }
 
     // Attach user information to the request object
-    req.user = decoded.user;
+    req.userId = decoded.user.id;
     next();
   });
 }
